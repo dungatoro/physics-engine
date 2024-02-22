@@ -1,15 +1,15 @@
-module verlet
+module ball_object
     implicit none
     real, dimension(2) :: g = 9.81
 
-    type body
+    type ball
         real, dimension(2) :: pos, v, a
-        real :: m, drag
+        real :: r, m, drag = 0.47
     end type
 contains
     subroutine update(o, dt)
-        ! updates a body's position, velocity and acceleration with time
-        type(body), intent(inout) :: o
+        ! updates a ball's position, velocity and acceleration with time
+        type(ball), intent(inout) :: o
         real, intent(in) :: dt
         real, dimension(2) :: new_pos, new_v, new_a
     
@@ -23,8 +23,8 @@ contains
     end subroutine
     
     function with_forces(o) 
-        ! calculates new acceleration due to forces acting on the body
-        type(body), intent(in) :: o
+        ! calculates new acceleration due to forces acting on the ball
+        type(ball), intent(in) :: o
         real, dimension(2) :: f_drag 
         real, dimension(2) :: a_drag
         real, dimension(2) :: with_forces
@@ -33,10 +33,29 @@ contains
         f_drag = 0.5 * o%drag * o%v**2
         with_forces = g - a_drag
     end function
+
+    ! TODO
+    ! - Check overlapping -> Calculate push force
+    ! - Write to screen
+
 end module
 
 program main
-    use verlet
+    use ball_object
     implicit none
+
+    integer :: i
+    real :: r = 1.0, m = 1.0
+    real, dimension(2) :: pos, v, a
+    type(ball) :: balls(100)
+
+    do i = 1, 100
+        call random_number(pos)
+        call random_number(v)
+        call random_number(a)
+        balls(i) = ball(pos, v, a, r, m)
+    end do
+
+    print *, balls
 end program
 
