@@ -37,7 +37,6 @@ contains
     ! TODO
     ! - Check overlapping -> Calculate push force
     ! - Write to screen
-
 end module
 
 program main
@@ -55,7 +54,5 @@ program main
         call random_number(a)
         balls(i) = ball(pos, v, a, r, m)
     end do
-
-    print *, balls
 end program
 
